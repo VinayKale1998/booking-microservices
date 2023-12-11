@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: vinaykale/auth
+          image: docker.io/vinaykale/auth
 ---
 apiVersion: v1
 kind: Service
