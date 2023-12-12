@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 //to allow async error throws to be handled by express directly rather than having to send it off with next();
 import "express-async-errors";
 import dotenv from "dotenv";
@@ -8,11 +9,13 @@ import { signInRouter } from "./routes/signin";
 import { signUpRouter } from "./routes/signup";
 import { errorHandler } from "../middlewares/error-handler";
 import { NotFoundError } from "./Errors/not-found-error";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.use(currentUserRouter);
 app.use(signInRouter);
@@ -30,15 +33,24 @@ app.get("/demo", (req, res) => {
   return res.send({ message: "inside app" });
 });
 
-const PORT = process.env.PORT;
+const start = async () => {
+  try {
+    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.log(err);
+  }
+  const PORT = process.env.PORT;
+  app
+    .listen(PORT, () => {
+      console.log(`Auth server is listening to port ${PORT} modified `);
+    })
+    .on("error", (err: Error) => {
+      console.log(`server failed to start : ${err.stack}`);
+    });
+};
 
-app
-  .listen(PORT, () => {
-    console.log(`Auth server is listening to port ${PORT} modified `);
-  })
-  .on("error", (err: Error) => {
-    console.log(`server failed to start : ${err}`);
-  });
+start();
 
 process.on("SIGINT", () => {
   console.log("Node process terminated");
