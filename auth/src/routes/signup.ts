@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
+import { RequestValidationError } from "../Errors/request-validation-error";
+import { DatabaseConnectionError } from "../Errors/database-connection-error";
 
 const signUpRouter = express.Router();
 
@@ -16,11 +18,11 @@ signUpRouter.post(
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).send(errors.array());
+      console.log("inside signup");
+      throw new RequestValidationError(errors.array());
     }
-    const { email, password } = req.body;
 
-    res.send({ message: "SignUp complete" });
+    throw new DatabaseConnectionError();
   }
 );
 
