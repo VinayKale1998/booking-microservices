@@ -12,6 +12,7 @@ import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./Errors/not-found-error";
 
 import cors from "cors";
+import { InternalServerError } from "./Errors/internal-server-error";
 
 dotenv.config();
 
@@ -44,6 +45,9 @@ app.get("/demo", (req, res) => {
 });
 
 const start = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new InternalServerError("JWT Secret not found");
+  }
   try {
     await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
     console.log("Connected to MongoDB");

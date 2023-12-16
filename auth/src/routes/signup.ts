@@ -1,15 +1,13 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { RequestValidationError } from "../Errors/request-validation-error";
-import { DatabaseConnectionError } from "../Errors/database-connection-error";
 import { InternalServerError } from "../Errors/internal-server-error";
 import { BadRequestError } from "../Errors/bad-request-error";
 import { User } from "../models/user";
-import bcrypt from "bcrypt";
-import { Password } from "../services/password";
 import { CustomError } from "../Errors/custom-error";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import { UserCreationResponse } from "../services/userCreationResponse";
 const signUpRouter = express.Router();
 dotenv.config();
 
@@ -40,12 +38,7 @@ signUpRouter.post(
     const user = User.build({ email, password });
     try {
       const savedUser = await user.save();
-      const appSecret = process.env.APP_SECRET;
-      if (!appSecret) {
-        throw new InternalServerError(
-          "APP_SECRET is not defined in the env. variables"
-        );
-      }
+      const appSecret = process.env.JWT_KEY;
 
       //default HS256(HMAX with SHA-256 hashing algorithm )
       const userJwt = jwt.sign(
@@ -53,7 +46,7 @@ signUpRouter.post(
           id: savedUser._id,
           email: savedUser.email,
         },
-        appSecret,
+        appSecret!,
         {
           expiresIn: 86400,
         }
@@ -61,7 +54,7 @@ signUpRouter.post(
       req.session = {
         jwt: userJwt,
       };
-      res.status(201).send({ user: savedUser, jwt: userJwt });
+      res.status(201).send({ savedUser });
     } catch (err) {
       if (!(err instanceof CustomError))
         throw new InternalServerError("Error during signup");

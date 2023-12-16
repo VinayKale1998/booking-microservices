@@ -14,24 +14,40 @@ interface UserModel extends mongoose.Model<UserDoc> {
 
 //an interface that describes the properties  that a user docuemnt has
 
-interface UserDoc extends mongoose.Document {
+export interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
   createdAt: string;
   updatedAt: string;
+  _id: string;
+  __v: number;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-  },
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
 
-  password: {
-    type: String,
-    required: true,
+    password: {
+      type: String,
+      required: true,
+    },
   },
-});
+  //using toJSON to modify the user json document returned while user creation
+  {
+    toJSON: {
+      transform(doc, ret) {
+        //doc is the actual doc that will be passed, and ret will be the returned document
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+        delete ret.__v;
+      },
+    },
+  }
+);
 
 userSchema.pre("save", async function (done) {
   //first creation will also be considered as modification
