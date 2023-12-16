@@ -8,7 +8,10 @@ import { User } from "../models/user";
 import bcrypt from "bcrypt";
 import { Password } from "../services/password";
 import { CustomError } from "../Errors/custom-error";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 const signUpRouter = express.Router();
+dotenv.config();
 
 signUpRouter.post(
   "/api/users/signup",
@@ -36,8 +39,29 @@ signUpRouter.post(
     }
     const user = User.build({ email, password });
     try {
-      await user.save();
-      res.status(201).send(user);
+      const savedUser = await user.save();
+      const appSecret = process.env.APP_SECRET;
+      if (!appSecret) {
+        throw new InternalServerError(
+          "APP_SECRET is not defined in the env. variables"
+        );
+      }
+
+      //default HS256(HMAX with SHA-256 hashing algorithm )
+      const userJwt = jwt.sign(
+        {
+          id: savedUser._id,
+          email: savedUser.email,
+        },
+        appSecret,
+        {
+          expiresIn: 86400,
+        }
+      );
+      req.session = {
+        jwt: userJwt,
+      };
+      res.status(201).send({ user: savedUser, jwt: userJwt });
     } catch (err) {
       if (!(err instanceof CustomError))
         throw new InternalServerError("Error during signup");
