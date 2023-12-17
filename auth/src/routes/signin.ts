@@ -4,7 +4,6 @@ import { signInValidator } from "../services/validators";
 import { Request, Response } from "express";
 import { RequestValidationError } from "../Errors/request-validation-error";
 import { User } from "../models/user";
-import { BadRequestError } from "../Errors/bad-request-error";
 import { CustomError } from "../Errors/custom-error";
 import { InternalServerError } from "../Errors/internal-server-error";
 import { Password } from "../services/password";

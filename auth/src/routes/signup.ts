@@ -7,8 +7,6 @@ import { User } from "../models/user";
 import { CustomError } from "../Errors/custom-error";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import cookieSession from "cookie-session";
-import { UserCreationResponse } from "../services/userCreationResponse";
 import { signUpVaidator } from "../services/validators";
 const signUpRouter = express.Router();
 dotenv.config();
