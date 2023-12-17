@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 import { RequestValidationError } from "../Errors/request-validation-error";
 import { InternalServerError } from "../Errors/internal-server-error";
 import { BadRequestError } from "../Errors/bad-request-error";
@@ -7,20 +7,17 @@ import { User } from "../models/user";
 import { CustomError } from "../Errors/custom-error";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import cookieSession from "cookie-session";
 import { UserCreationResponse } from "../services/userCreationResponse";
+import { signUpVaidator } from "../services/validators";
 const signUpRouter = express.Router();
 dotenv.config();
 
 signUpRouter.post(
   "/api/users/signup",
-  [
-    body("email").isEmail().withMessage("Email must be valid"),
-    body("password")
-      .trim()
-      .isLength({ min: 4, max: 20 })
-      .withMessage("Password must be between 4 and 20 characters "),
-  ],
+  signUpVaidator,
   async (req: Request, res: Response) => {
+    req.session = null;
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -51,6 +48,7 @@ signUpRouter.post(
           expiresIn: 86400,
         }
       );
+
       req.session = {
         jwt: userJwt,
       };
@@ -58,6 +56,9 @@ signUpRouter.post(
     } catch (err) {
       if (!(err instanceof CustomError))
         throw new InternalServerError("Error during signup");
+      else {
+        throw err;
+      }
     }
   }
 );

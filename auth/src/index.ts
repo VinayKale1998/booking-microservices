@@ -39,11 +39,6 @@ app.get("*", async () => {
 });
 app.use(errorHandler);
 
-app.get("/demo", (req, res) => {
-  console.log("inside app");
-  return res.send({ message: "inside app" });
-});
-
 const start = async () => {
   if (!process.env.JWT_KEY) {
     throw new InternalServerError("JWT Secret not found");
