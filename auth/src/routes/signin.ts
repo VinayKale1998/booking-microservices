@@ -34,7 +34,8 @@ signInRouter.post(
       const existingUser = await User.findOne({ email });
 
       //if the user is undefined, user has not registered
-      if (!existingUser) throw new BadRequestError("Email not registered");
+      if (!existingUser)
+        throw new AuthenticationError("Email not registered, please signup");
 
       //else
       if (!Password.compare(existingUser.password, password)) {
