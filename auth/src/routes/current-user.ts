@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { currentUser } from "../middlewares/current-user";
+import { currentUser } from "@vr-vitality/common";
 
 dotenv.config();
 

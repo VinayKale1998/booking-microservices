@@ -1,5 +1,5 @@
 import express from "express";
-import { InternalServerError } from "../Errors/internal-server-error";
+import { InternalServerError } from "@vr-vitality/common";
 
 const signOutRouter = express.Router();
 

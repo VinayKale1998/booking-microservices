@@ -1,6 +1,5 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import app from "../app";
 
 let mongo: MongoMemoryServer;
 //first test is gonna take some time as the MongoServer has to start, but the subsequent tests will be relatively quicker

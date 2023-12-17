@@ -1,10 +1,10 @@
 import express, { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { RequestValidationError } from "../Errors/request-validation-error";
-import { InternalServerError } from "../Errors/internal-server-error";
-import { BadRequestError } from "../Errors/bad-request-error";
+import { RequestValidationError } from "@vr-vitality/common";
+import { InternalServerError } from "@vr-vitality/common";
+import { BadRequestError } from "@vr-vitality/common";
 import { User } from "../models/user";
-import { CustomError } from "../Errors/custom-error";
+import { CustomError } from "@vr-vitality/common";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { signUpVaidator } from "../services/validators";

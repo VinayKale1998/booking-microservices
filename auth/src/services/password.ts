@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { BadRequestError } from "../Errors/bad-request-error";
+import { BadRequestError } from "@vr-vitality/common";
 export class Password {
   static toHash(password: string): string | undefined {
     try {

@@ -2,12 +2,12 @@ import express from "express";
 import { validationResult } from "express-validator";
 import { signInValidator } from "../services/validators";
 import { Request, Response } from "express";
-import { RequestValidationError } from "../Errors/request-validation-error";
+import { RequestValidationError } from "@vr-vitality/common";
 import { User } from "../models/user";
-import { CustomError } from "../Errors/custom-error";
-import { InternalServerError } from "../Errors/internal-server-error";
+import { CustomError } from "@vr-vitality/common";
+import { InternalServerError } from "@vr-vitality/common";
 import { Password } from "../services/password";
-import { AuthenticationError } from "../Errors/authentication-error";
+import { AuthenticationError } from "@vr-vitality/common";
 
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";

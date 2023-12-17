@@ -7,8 +7,8 @@ import { currentUserRouter } from "./routes/current-user";
 import { signOutRouter } from "./routes/signout";
 import { signInRouter } from "./routes/signin";
 import { signUpRouter } from "./routes/signup";
-import { errorHandler } from "./middlewares/error-handler";
-import { NotFoundError } from "./Errors/not-found-error";
+import { errorHandler, NotFoundError } from "@vr-vitality/common";
+
 import cors from "cors";
 
 dotenv.config();

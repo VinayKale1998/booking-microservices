@@ -1,4 +1,4 @@
-import { InternalServerError } from "./Errors/internal-server-error";
+import { InternalServerError } from "@vr-vitality/common";
 import app from "./app";
 import mongoose from "mongoose";
 const start = async () => {

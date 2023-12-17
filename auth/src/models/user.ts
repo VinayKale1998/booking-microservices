@@ -1,6 +1,6 @@
 import mongoose, { mongo } from "mongoose";
 import { Password } from "../services/password";
-import { InternalServerError } from "../Errors/internal-server-error";
+import { InternalServerError } from "@vr-vitality/common";
 // interface that defines the properties required to create a new user
 interface IUserAttributes {
   email: string;
