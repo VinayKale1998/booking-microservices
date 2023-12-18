@@ -1,16 +1,33 @@
-import express from "express";
-import {} from "dotenv/config";
+import { InternalServerError } from "@vr-vitality/common";
+import app from "./app";
+import mongoose from "mongoose";
+const start = async () => {
+  if (!process.env.JWT_KEY) {
+    throw new InternalServerError("JWT Secret not found");
+  }
+  try {
+    await mongoose.connect("mongodb://auth-mongo-srv:27017/auth");
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.log(err);
+  }
+  const PORT = process.env.PORT;
+  app
+    .listen(PORT, () => {
+      console.log(`Auth server is listening to port ${PORT} modified `);
+    })
+    .on("error", (err: Error) => {
+      console.log(`server failed to start : ${err.stack}`);
+    });
+};
 
-const app = express();
+start();
 
-app.use(express.json());
+process.on("SIGINT", () => {
+  console.log("Node process terminated");
+  process.exit(0);
+});
 
-const PORT = process.env.PORT;
-
-app
-  .listen(PORT, () => {
-    console.log(`Auth server is listening to port ${PORT}`);
-  })
-  .on("error", (err: Error) => {
-    console.log(`server failed to start : ${err}`);
-  });
+process.on("exit", (code: number) => {
+  console.log(`process ended with code ${code}`);
+});

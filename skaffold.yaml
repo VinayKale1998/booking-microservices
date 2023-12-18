@@ -1,0 +1,15 @@
+apiVersion: skaffold/v4beta3
+kind: Config
+manifests:
+  rawYaml:
+    - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: docker.io/vinaykale/auth
+      context: auth
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
