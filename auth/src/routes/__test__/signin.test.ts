@@ -36,13 +36,7 @@ describe("testing signin scenarios", () => {
   });
 
   it("Returns 401 upon sending a wrong password for a valid signed up email", async () => {
-    await request(app)
-      .post("/api/users/signup")
-      .send({
-        email: "test@test.com",
-        password: "password",
-      })
-      .expect(201);
+    await signup();
 
     //now change the password for signin
     await request(app)

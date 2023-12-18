@@ -1,5 +1,7 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
+import app from "../app";
+import request from "supertest";
 
 let mongo: MongoMemoryServer;
 //first test is gonna take some time as the MongoServer has to start, but the subsequent tests will be relatively quicker
@@ -31,3 +33,19 @@ afterAll(async () => {
   await mongoose.connection.close();
   console.log("mongoose connection closed");
 });
+declare global {
+  var signup: () => Promise<string[]>;
+}
+
+global.signup = async () => {
+  const email = "test@test.com";
+  const password = "password";
+
+  const response = await request(app)
+    .post("/api/users/signup")
+    .send({ email, password });
+
+  expect(response.status).toEqual(201);
+
+  return response.get("Set-Cookie");
+};

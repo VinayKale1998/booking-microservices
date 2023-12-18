@@ -3,8 +3,9 @@ import cookieSession from "cookie-session";
 //to allow async error throws to be handled by express directly rather than having to send it off with next();
 import "express-async-errors";
 import dotenv from "dotenv";
-import { errorHandler, NotFoundError } from "@vr-vitality/common";
+import { currentUser, errorHandler, NotFoundError } from "@vr-vitality/common";
 import cors from "cors";
+import { createRouter } from "./routes/create";
 
 dotenv.config();
 
@@ -19,6 +20,11 @@ app.use(
     secure: process.env.NODE_ENV !== "test" ? true : false,
   })
 );
+
+//we use the current use middleware before all the routes, and if the user is authenticated, the req.currentUser is set
+//but the routes decide whether they should let the user enter by using requireAuth middleware at their end
+app.use(currentUser);
+app.use(createRouter);
 
 //wiringg up the random route handler before the erorr handler, because we are going to throw an Error;
 app.all("*", async () => {
