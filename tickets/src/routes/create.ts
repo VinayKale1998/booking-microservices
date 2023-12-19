@@ -1,7 +1,14 @@
-import { currentUser, requireAuth, validateRequest } from "@vr-vitality/common";
+import {
+  CustomError,
+  InternalServerError,
+  currentUser,
+  requireAuth,
+  validateRequest,
+} from "@vr-vitality/common";
 import express from "express";
 import { Request, Response } from "express";
-import { body, ValidationError } from "express-validator";
+import { body } from "express-validator";
+import { Ticket, ITickerAttrs } from "../models/ticketmodel";
 
 const createRouter = express.Router();
 
@@ -18,8 +25,36 @@ createRouter.post(
   requireAuth,
   validators,
   validateRequest,
-  (req: Request, res: Response) => {
-    res.sendStatus(200);
+  async (req: Request, res: Response) => {
+    //fetching title and price from the request
+    try {
+      const { title, price } = req.body;
+
+      // fetching the id of the user from the curretnUser property set by currentUser middleware
+      const id = req.currentUser!.id;
+
+      //collating to form a ticket object
+      const collatedTicket: ITickerAttrs = { title, price, userId: id };
+
+      //building a ticket doc
+      const ticket = Ticket.build(collatedTicket);
+
+      //saving the document
+      const savedTicket = await ticket.save();
+
+      //responding with the ticket created
+      res.status(201).send(savedTicket);
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new InternalServerError(err.message);
+      }
+      if (!(err instanceof CustomError)) {
+        throw new InternalServerError(
+          "Oops something went wrong during ticket creation"
+        );
+      }
+      throw new InternalServerError("something went wrong");
+    }
   }
 );
 
