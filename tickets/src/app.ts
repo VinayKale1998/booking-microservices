@@ -6,6 +6,9 @@ import dotenv from "dotenv";
 import { currentUser, errorHandler, NotFoundError } from "@vr-vitality/common";
 import cors from "cors";
 import { createRouter } from "./routes/create";
+import { showRouter } from "./routes/show";
+import { indexRouter } from "./routes";
+import { updateRouter } from "./routes/update";
 
 dotenv.config();
 
@@ -25,6 +28,9 @@ app.use(
 //but the routes decide whether they should let the user enter by using requireAuth middleware at their end
 app.use(currentUser);
 app.use(createRouter);
+app.use(showRouter);
+app.use(indexRouter);
+app.use(updateRouter);
 
 //wiringg up the random route handler before the erorr handler, because we are going to throw an Error;
 app.all("*", async () => {
