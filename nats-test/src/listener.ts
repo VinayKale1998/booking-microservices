@@ -18,5 +18,7 @@ stan.on("close", () => {
   process.exit();
 });
 
+//to let nats know that the process has been shutdown and not wait for it, send the events onto other processes
+//alsp a graceful shutdown
 process.on("SIGINT", () => stan.close());
 process.on("SIGTERM", () => stan.close());

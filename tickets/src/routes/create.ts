@@ -9,6 +9,8 @@ import express from "express";
 import { Request, Response } from "express";
 import { body } from "express-validator";
 import { Ticket, ITickerAttrs } from "../models/ticketmodel";
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const createRouter = express.Router();
 
@@ -42,7 +44,13 @@ createRouter.post(
       //saving the document
       const savedTicket = await ticket.save();
 
-      //responding with the ticket created
+      new TicketCreatedPublisher(natsWrapper.client).publish({
+        id: savedTicket.id,
+        title: savedTicket.title,
+        price: savedTicket.price,
+        userId: savedTicket.userId,
+      });
+      // responding with the ticket created
       res.status(201).send(savedTicket);
     } catch (err) {
       if (err instanceof Error) {
