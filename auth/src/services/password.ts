@@ -1,5 +1,9 @@
 import bcrypt from "bcrypt";
 import { BadRequestError } from "@vr-vitality/common";
+
+/* class defined to abstract the password hashing
+and comparing mechanism */
+
 export class Password {
   static toHash(password: string): string | undefined {
     try {
