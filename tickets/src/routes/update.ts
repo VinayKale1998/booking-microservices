@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { Ticket } from "../models/ticketmodel";
+import { ITickerAttrs, ITicketDoc, Ticket } from "../models/ticketmodel";
 import {
   NotFoundError,
   validateRequest,
@@ -8,6 +8,8 @@ import {
   InternalServerError,
 } from "@vr-vitality/common";
 import { body } from "express-validator";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const updateRouter = express.Router();
 
@@ -23,7 +25,7 @@ updateRouter.put(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     const { title, price } = req.body;
-    const ticket = await Ticket.findById(id);
+    const ticket: ITicketDoc | null = await Ticket.findById(id);
     if (!ticket) throw new NotFoundError();
 
     if (ticket.userId !== req.currentUser!.id) {
@@ -31,23 +33,19 @@ updateRouter.put(
     }
 
     try {
-      console.log("original ticket", ticket);
-      //   const updatedTicket = await Ticket.findOneAndUpdate(
-      //     { userId: ticket.userId },
-      //     { $set: { title, price } },
-      //     { new: true }
-      //   );
-
-      //we can actuall call the set function on the already fetched ticket document
       ticket.set({
         title,
         price,
       });
 
       await ticket.save();
-      //after we do save, mongoose will make sure that the in memory ticket document gets updated as well
 
-      console.log("updated ticket in route", ticket);
+      new TicketUpdatedPublisher(natsWrapper.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId,
+      });
       res.send(ticket);
     } catch (err) {
       throw new InternalServerError("Error while updating the ticket");

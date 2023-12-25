@@ -1,9 +1,9 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-import app from "../app";
-import request from "supertest";
 let mongo: MongoMemoryServer;
+
+jest.mock("../nats-wrapper.ts");
 //first test is gonna take some time as the MongoServer has to start, but the subsequent tests will be relatively quicker
 beforeAll(async () => {
   try {

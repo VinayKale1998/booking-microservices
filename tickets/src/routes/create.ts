@@ -44,6 +44,7 @@ createRouter.post(
       //saving the document
       const savedTicket = await ticket.save();
 
+      //publishig create event
       new TicketCreatedPublisher(natsWrapper.client).publish({
         id: savedTicket.id,
         title: savedTicket.title,

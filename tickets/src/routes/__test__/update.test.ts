@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../../app";
 import mongoose from "mongoose";
-
+jest.mock("../../nats-wrapper.ts");
 describe("testing update routes", () => {
   it("returns  a 404 if the provided id does not exist", async () => {
     const randomValidId = new mongoose.Types.ObjectId().toHexString();

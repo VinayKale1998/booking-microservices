@@ -18,6 +18,7 @@ describe("testing show route", () => {
       .send({ title, price })
       .expect(201);
 
+    console.log("ticket creation response", creationResponse.body);
     const ticketResponse = await request(app)
       .get(`/api/tickets/${creationResponse.body.id}`)
       .send()

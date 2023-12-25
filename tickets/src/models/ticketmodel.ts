@@ -6,7 +6,7 @@ export interface ITickerAttrs {
   userId: string;
 }
 
-interface ITicketDoc extends mongoose.Document {
+export interface ITicketDoc extends mongoose.Document {
   title: string;
   price: number;
   userId: string;
