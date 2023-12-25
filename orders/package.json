@@ -1,5 +1,5 @@
 {
-  "name": "tickets",
+  "name": "orders",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -25,7 +25,7 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/mongoose": "^5.11.97",
-    "@vr-vitality/common": "^1.0.12",
+    "@vr-vitality/common": "^1.0.13",
     "bcrypt": "^5.1.1",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
@@ -43,6 +43,7 @@
     "validator": "^13.11.0"
   },
   "devDependencies": {
+    "@types/connect": "^3.4.38",
     "@types/jest": "^29.5.11",
     "@types/supertest": "^2.0.16",
     "jest": "^29.7.0",

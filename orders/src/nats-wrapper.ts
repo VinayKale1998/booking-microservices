@@ -9,7 +9,6 @@ class NatsWrapper {
     if (!this._client) {
       throw new Error("Cannot access NATS  client before conencting");
     }
-
     return this._client;
   }
   connect(cluserId: string, clientId: string, url: string) {
