@@ -11,11 +11,20 @@ const start = async () => {
   if (!process.env.MONGO_URI) {
     throw new InternalServerError("MONGO_URI not found");
   }
+  if (!process.env.NATS_URL) {
+    throw new InternalServerError("MONGO_URI not found");
+  }
+  if (!process.env.NATS_CLUSTER_ID) {
+    throw new InternalServerError("MONGO_URI not found");
+  }
+  if (!process.env.NATA_CLIENT_ID) {
+    throw new InternalServerError("MONGO_URI not found");
+  }
   try {
     await natsWrapper.connect(
-      "ticketing",
-      "sfsffsvvvvvv",
-      "http://nats-srv:4222"
+      process.env.NATS_CLUSTER_ID,
+      process.env.NATA_CLIENT_ID,
+      process.env.NATS_URL
     );
 
     natsWrapper.client.on("close", () => {

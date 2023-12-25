@@ -1,7 +1,8 @@
 import request from "supertest";
 import app from "../../app";
 import mongoose from "mongoose";
-jest.mock("../../nats-wrapper.ts");
+import { natsWrapper } from "../../nats-wrapper";
+
 describe("testing update routes", () => {
   it("returns  a 404 if the provided id does not exist", async () => {
     const randomValidId = new mongoose.Types.ObjectId().toHexString();
@@ -101,5 +102,29 @@ describe("testing update routes", () => {
     console.log("udpated ticket in the test", ticketFetch.body);
     expect(ticketFetch.body.title).toEqual("title2");
     expect(ticketFetch.body.price).toEqual(21);
+  });
+
+  it("publishes an event successfully", async () => {
+    const userCookie = global.signup();
+    const ticketCreation = await request(app)
+      .post(`/api/tickets/`)
+      .set("Cookie", userCookie)
+      .send({
+        title: "title",
+        price: 20,
+      })
+      .expect(201);
+
+    await request(app)
+      .put(`/api/tickets/${ticketCreation.body.id!}`)
+      .set("Cookie", userCookie)
+      .send({
+        title: "title2",
+        price: 21,
+      })
+      .expect(200);
+
+    //confirming the call to the mock natswraper implementation
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
   });
 });
