@@ -17,13 +17,13 @@ const start = async () => {
   if (!process.env.NATS_CLUSTER_ID) {
     throw new InternalServerError("MONGO_URI not found");
   }
-  if (!process.env.NATA_CLIENT_ID) {
+  if (!process.env.NATS_CLIENT_ID) {
     throw new InternalServerError("MONGO_URI not found");
   }
   try {
     await natsWrapper.connect(
       process.env.NATS_CLUSTER_ID,
-      process.env.NATA_CLIENT_ID,
+      process.env.NATS_CLIENT_ID,
       process.env.NATS_URL
     );
 
@@ -36,10 +36,10 @@ const start = async () => {
   } catch (err) {
     console.log(err);
   }
-  const PORT = process.env.PORT;
+  const PORT = 3002;
   app
     .listen(PORT, () => {
-      console.log(`The tickets service is listening to port ${PORT} modified `);
+      console.log(`The orders service is listening to port ${PORT} modified `);
     })
     .on("error", (err: Error) => {
       console.log(`server failed to start : ${err.stack}`);
