@@ -56,7 +56,7 @@ createOrderRouter.post(
 
     // publish an event saying that an order was created
 
-    res.status(201).send(order);
+    return res.status(201).send(order);
   }
 );
 
