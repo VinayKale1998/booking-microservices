@@ -22,10 +22,7 @@ describe("testing show route", () => {
       .send({ ticketId: ticket.id })
       .expect(201);
 
-    console.log("inside fetches the order", order);
     // make a request to fetch the order
-
-    console.log("inside fetches the order", ticket.id);
 
     const response = await request(app)
       .get(`/api/orders/${order.id}`)
@@ -34,5 +31,32 @@ describe("testing show route", () => {
       .expect(200);
 
     expect(response.body.id).toEqual(order.id);
+  });
+
+  it(" throw auth error when an order created by one user is tried to be accessed by another user", async () => {
+    //build a ticket
+    const ticket = Ticket.build({
+      title: "demo",
+      price: 20,
+    });
+
+    await ticket.save();
+
+    //mock two user cookies
+    const user1 = global.signup();
+    const user2 = global.signup();
+    //build an order with the first cookie
+    const { body: order } = await request(app)
+      .post("/api/orders")
+      .set("Cookie", user1)
+      .send({ ticketId: ticket.id })
+      .expect(201);
+
+    //try to fetch with 2nd cookie    //assert for 401
+    const response = await request(app)
+      .get(`/api/orders/${order.id}`)
+      .set("Cookie", user2)
+      .send()
+      .expect(401);
   });
 });

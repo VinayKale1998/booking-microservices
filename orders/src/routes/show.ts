@@ -15,6 +15,8 @@ const validationCritera = [
 ];
 showOrderRouter.get(
   "/api/orders/:orderId",
+  validationCritera,
+  validateRequest,
   requireAuth,
   async (req: Request, res: Response) => {
     const { orderId } = req.params;
