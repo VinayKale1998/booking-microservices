@@ -9,6 +9,24 @@ build:
   artifacts:
     - image: docker.io/vinaykale/auth
       context: auth
+      docker:
+        dockerfile: dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: docker.io/vinaykale/tickets
+      context: tickets
+      docker:
+        dockerfile: dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: docker.io/vinaykale/orders
+      context: orders
+      docker:
+        dockerfile: dockerfile
       sync:
         manual:
           - src: "src/**/*.ts"

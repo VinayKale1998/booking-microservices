@@ -1,9 +1,9 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import app from "../app";
-import request from "supertest";
-
+import jwt from "jsonwebtoken";
 let mongo: MongoMemoryServer;
+
+jest.mock("../nats-wrapper.ts");
 //first test is gonna take some time as the MongoServer has to start, but the subsequent tests will be relatively quicker
 beforeAll(async () => {
   try {
@@ -17,6 +17,8 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  //to clear the mock publish function implementation
+  jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections();
 
   for (let collection of collections) {
@@ -33,19 +35,33 @@ afterAll(async () => {
   await mongoose.connection.close();
   console.log("mongoose connection closed");
 });
+
+//declaring a  global signup function
 declare global {
-  var signup: () => Promise<string[]>;
+  var signup: () => string[];
 }
 
-global.signup = async () => {
-  const email = "test@test.com";
-  const password = "password";
+global.signup = () => {
+  //build  a JWT payload {id,email}
 
-  const response = await request(app)
-    .post("/api/users/signup")
-    .send({ email, password });
+  const payload = {
+    id: new mongoose.Types.ObjectId().toHexString(),
+    email: "test@test.com",
+  };
+  //create the JWT
+  const token = jwt.sign(payload, process.env.JWT_KEY!);
 
-  expect(response.status).toEqual(201);
+  //build a session object {jwt:value}
 
-  return response.get("Set-Cookie");
+  const session = { jwt: token };
+
+  //turn that session into JSON
+  const sessionJSON = JSON.stringify(session);
+
+  //Take JSON and encode it as base64
+  const base64 = Buffer.from(sessionJSON).toString("base64");
+
+  //return a string thats the cookie with the encoded data
+  //this has to be converted to an array for supertest to be able to work with it
+  return [`session=${base64}`];
 };
