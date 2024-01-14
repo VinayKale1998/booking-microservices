@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { OrderStatus } from "@vr-vitality/common"; //enum defined for order status
 import { TicketDoc } from "./ticket-model";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 interface OrderAttributes {
   userId: string;
@@ -11,6 +12,7 @@ interface OrderAttributes {
 
 interface OrderDoc extends mongoose.Document {
   userId: string;
+  version: number;
   status: OrderStatus;
   expiresAt: Date;
   ticket: TicketDoc;
@@ -52,6 +54,8 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
+orderSchema.set("versionKey", "version");
+orderSchema.plugin(updateIfCurrentPlugin);
 orderSchema.statics.build = (attrs: OrderAttributes) => {
   return new Order(attrs);
 };
