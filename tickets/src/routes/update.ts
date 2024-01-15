@@ -47,12 +47,10 @@ updateRouter.put(
         price: ticket.price,
         userId: ticket.userId,
       });
-      res.send(ticket);
+      return res.send(ticket);
     } catch (err) {
       throw new InternalServerError("Error while updating the ticket");
     }
-
-    throw new InternalServerError("Error while updating the ticket");
   }
 );
 

@@ -53,7 +53,7 @@ createRouter.post(
         userId: savedTicket.userId,
       });
       // responding with the ticket created
-      res.status(201).send(savedTicket);
+      return res.status(201).send(savedTicket);
     } catch (err) {
       if (err instanceof Error) {
         throw new InternalServerError(err.message);
