@@ -20,7 +20,6 @@ describe("testing order scenarios", () => {
       title: "Hello",
       price: 10,
       id: new mongoose.Types.ObjectId().toHexString(),
-      version: 0,
     });
 
     await ticket.save();
@@ -48,7 +47,6 @@ describe("testing order scenarios", () => {
       title: "Hello",
       price: 10,
       id: new mongoose.Types.ObjectId().toHexString(),
-      version: 0,
     });
 
     await ticket.save();
@@ -66,7 +64,6 @@ describe("testing order scenarios", () => {
       title: "Hello",
       price: 10,
       id: new mongoose.Types.ObjectId().toHexString(),
-      version: 0,
     });
 
     await ticket.save();

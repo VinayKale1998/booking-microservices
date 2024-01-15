@@ -6,7 +6,6 @@ interface TicketAttrs {
   title: string;
   price: number;
   id: string;
-  version: number;
 }
 
 export interface TicketDoc extends mongoose.Document {

@@ -8,7 +8,6 @@ const buildTicket = () => {
     title: "concet",
     price: 20,
     id: new mongoose.Types.ObjectId().toHexString(),
-    version: 0,
   });
 
   return ticket;

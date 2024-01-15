@@ -39,6 +39,14 @@ it("creates and saves a ticket", async () => {
   expect(ticket!.price).toEqual(data.price);
 });
 it("it acks the message", async () => {
-  // call the onmessage function with the data Object + message object
+  const { listener, data, msg } = await setup();
+  // call the onmessage function  twice with the data Object + message object, change the ticket id for the second onMessage call
+  await listener.onMessage(data, msg);
+
+  //change the id of the data object ,because the second ticket cannot be saved with the same id
+  data.id = new mongoose.Types.ObjectId().toHexString();
+  await listener.onMessage(data, msg);
+
   //write assertions to make sure a ticket was created!
+  expect(msg.ack).toHaveBeenCalledTimes(2);
 });

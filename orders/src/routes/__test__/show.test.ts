@@ -10,7 +10,6 @@ describe("testing show route", () => {
       title: "demo",
       price: 20,
       id: new mongoose.Types.ObjectId().toHexString(),
-      version: 0,
     });
 
     await ticket.save();
@@ -42,7 +41,6 @@ describe("testing show route", () => {
       title: "demo",
       price: 20,
       id: new mongoose.Types.ObjectId().toHexString(),
-      version: 0,
     });
 
     await ticket.save();

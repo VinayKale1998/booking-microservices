@@ -12,7 +12,6 @@ describe("testing delete route", () => {
       title: "demo",
       price: 20,
       id: new mongoose.Types.ObjectId().toHexString(),
-      version: 0,
     });
 
     await ticket.save();
@@ -49,7 +48,6 @@ describe("testing delete route", () => {
       title: "demo",
       price: 20,
       id: new mongoose.Types.ObjectId().toHexString(),
-      version: 0,
     });
 
     await ticket.save();
@@ -76,7 +74,6 @@ describe("testing delete route", () => {
       title: "demo",
       price: 20,
       id: new mongoose.Types.ObjectId().toHexString(),
-      version: 0,
     });
 
     await ticket.save();
