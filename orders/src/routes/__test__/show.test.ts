@@ -1,6 +1,7 @@
 import request from "supertest";
 import app from "../../app";
 import { Ticket } from "../../models/ticket-model";
+import mongoose from "mongoose";
 
 describe("testing show route", () => {
   it("fetches the order", async () => {
@@ -8,6 +9,8 @@ describe("testing show route", () => {
     const ticket = Ticket.build({
       title: "demo",
       price: 20,
+      id: new mongoose.Types.ObjectId().toHexString(),
+      version: 0,
     });
 
     await ticket.save();
@@ -38,6 +41,8 @@ describe("testing show route", () => {
     const ticket = Ticket.build({
       title: "demo",
       price: 20,
+      id: new mongoose.Types.ObjectId().toHexString(),
+      version: 0,
     });
 
     await ticket.save();

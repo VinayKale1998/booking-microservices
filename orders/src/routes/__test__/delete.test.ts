@@ -3,6 +3,7 @@ import app from "../../app";
 import { Ticket } from "../../models/ticket-model";
 import { OrderStatus } from "@vr-vitality/common";
 import { natsWrapper } from "../../nats-wrapper";
+import mongoose from "mongoose";
 
 describe("testing delete route", () => {
   it("it marks an order cancelled", async () => {
@@ -10,6 +11,8 @@ describe("testing delete route", () => {
     const ticket = Ticket.build({
       title: "demo",
       price: 20,
+      id: new mongoose.Types.ObjectId().toHexString(),
+      version: 0,
     });
 
     await ticket.save();
@@ -45,6 +48,8 @@ describe("testing delete route", () => {
     const ticket = Ticket.build({
       title: "demo",
       price: 20,
+      id: new mongoose.Types.ObjectId().toHexString(),
+      version: 0,
     });
 
     await ticket.save();
@@ -70,6 +75,8 @@ describe("testing delete route", () => {
     const ticket = Ticket.build({
       title: "demo",
       price: 20,
+      id: new mongoose.Types.ObjectId().toHexString(),
+      version: 0,
     });
 
     await ticket.save();

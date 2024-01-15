@@ -1,12 +1,14 @@
 import request from "supertest";
 import app from "../../app";
-import { Order } from "../../models/order-model";
+import mongoose from "mongoose";
 import { Ticket } from "../../models/ticket-model";
 
 const buildTicket = () => {
   const ticket = Ticket.build({
     title: "concet",
     price: 20,
+    id: new mongoose.Types.ObjectId().toHexString(),
+    version: 0,
   });
 
   return ticket;
