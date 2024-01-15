@@ -2,6 +2,7 @@ import request from "supertest";
 import app from "../../app";
 import mongoose from "mongoose";
 import { natsWrapper } from "../../nats-wrapper";
+import { Ticket } from "../../models/ticketmodel";
 
 describe("testing update routes", () => {
   it("returns  a 404 if the provided id does not exist", async () => {
@@ -126,5 +127,27 @@ describe("testing update routes", () => {
 
     //confirming the call to the mock natswraper implementation
     expect(natsWrapper.client.publish).toHaveBeenCalled();
+  });
+
+  it("rejects the update if the ticket is reserved", async () => {
+    const userCookie = global.signup();
+    const ticketCreation = await request(app)
+      .post(`/api/tickets/`)
+      .set("Cookie", userCookie)
+      .send({
+        title: "title",
+        price: 20,
+      });
+    const ticket = await Ticket.findById(ticketCreation.body.id);
+    ticket!.set({ orderId: new mongoose.Types.ObjectId().toHexString() });
+    await ticket!.save();
+    await request(app)
+      .put(`/api/tickets/${ticketCreation.body.id!}`)
+      .set("Cookie", userCookie)
+      .send({
+        title: "title2",
+        price: 21,
+      })
+      .expect(400);
   });
 });

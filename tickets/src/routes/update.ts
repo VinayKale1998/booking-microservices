@@ -6,6 +6,7 @@ import {
   requireAuth,
   AuthenticationError,
   InternalServerError,
+  BadRequestError,
 } from "@vr-vitality/common";
 import { body } from "express-validator";
 import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
@@ -32,6 +33,12 @@ updateRouter.put(
       throw new AuthenticationError("You are not the owner");
     }
 
+    // check if the ticket is tied to an order
+
+    if (ticket.orderId)
+      throw new BadRequestError(
+        "Ticket already reserved, please wait for cancellation or completion"
+      );
     try {
       ticket.set({
         title,
