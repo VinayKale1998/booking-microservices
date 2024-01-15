@@ -1,3 +1,5 @@
+import { Stan } from "node-nats-streaming";
+
 export const natsWrapper = {
   client: {
     publish: jest
@@ -7,7 +9,7 @@ export const natsWrapper = {
           callback();
         }
       ),
-  },
+  } as unknown as Stan,
 };
 
 // initial setup
