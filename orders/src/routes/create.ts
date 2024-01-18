@@ -16,7 +16,7 @@ import { natsWrapper } from "../nats-wrapper";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 const createOrderRouter = express.Router();
 
-const EXPIRATON_WINDOW_SECONDS = 15 * 60;
+const EXPIRATON_WINDOW_SECONDS = 1 * 60;
 const validationCriteria = [
   body("ticketId")
     .not()

@@ -1,5 +1,6 @@
 import { InternalServerError } from "@vr-vitality/common";
 import { natsWrapper } from "./nats-wrapper";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
 const start = async () => {
   if (!process.env.NATS_URL) {
     throw new InternalServerError("MONGO_URI not found");
@@ -21,6 +22,9 @@ const start = async () => {
       console.log("NATS connection closed");
       process.exit();
     });
+
+    new OrderCreatedListener(natsWrapper.client).listen();
+    console.log("connected to NATS");
   } catch (err) {
     console.log(err);
   }
