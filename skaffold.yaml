@@ -31,3 +31,11 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: docker.io/vinaykale/expiration
+      context: expiration
+      docker:
+        dockerfile: dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .

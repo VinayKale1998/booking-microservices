@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2018", // or a newer version, depending on your Node.js version
+    "module": "CommonJS", // or "ES6" if you want to use ES Modules
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*", "src/test/**/*"]
+}
