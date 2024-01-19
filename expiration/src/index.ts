@@ -28,7 +28,6 @@ const start = async () => {
   } catch (err) {
     console.log(err);
   }
-  const PORT = process.env.PORT;
 };
 start();
 
