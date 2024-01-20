@@ -40,7 +40,7 @@ const start = async () => {
   } catch (err) {
     console.log(err);
   }
-  const PORT = 3002;
+  const PORT = 3003;
   app
     .listen(PORT, () => {
       console.log(`The tickets service is listening to port ${PORT} modified `);

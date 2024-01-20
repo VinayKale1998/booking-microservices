@@ -5,6 +5,7 @@ import "express-async-errors";
 import dotenv from "dotenv";
 import { currentUser, errorHandler, NotFoundError } from "@vr-vitality/common";
 import cors from "cors";
+import { newRouter } from "./routes/new";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(
 //we use the current use middleware before all the routes, and if the user is authenticated, the req.currentUser is set
 //but the routes decide whether they should let the user enter by using requireAuth middleware at their end
 app.use(currentUser);
+app.use(newRouter);
 
 //wiringg up the random route handler before the erorr handler, because we are going to throw an Error;
 app.all("*", async () => {

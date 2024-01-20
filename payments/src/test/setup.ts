@@ -38,7 +38,7 @@ afterAll(async () => {
 
 //declaring a  global signup function
 declare global {
-  var signup: () => string[];
+  var signup: () => [[string], string];
 }
 
 global.signup = () => {
@@ -63,5 +63,5 @@ global.signup = () => {
 
   //return a string thats the cookie with the encoded data
   //this has to be converted to an array for supertest to be able to work with it
-  return [`session=${base64}`];
+  return [[`session=${base64}`], payload.id];
 };
