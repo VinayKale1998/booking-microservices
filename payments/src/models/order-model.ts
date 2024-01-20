@@ -23,7 +23,7 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 const orderSchema = new mongoose.Schema(
   {
     version: {
-      type: String,
+      type: Number,
       required: true,
     },
     userId: {
@@ -44,7 +44,7 @@ const orderSchema = new mongoose.Schema(
     toJSON: {
       transform(doc, ret) {
         ret.id = ret._id;
-        delete ret.id;
+        delete ret._id;
       },
     },
   }

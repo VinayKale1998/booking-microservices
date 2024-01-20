@@ -6,7 +6,7 @@ import {
 import { natsWrapper } from "../../__mocks__/nats-wrapper";
 import { Order } from "../../models/order-model";
 import { OrderCreatedListener } from "../listeners/order-created-listener";
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import { Message } from "node-nats-streaming";
 
 const setup = () => {
