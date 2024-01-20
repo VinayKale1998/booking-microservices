@@ -21,6 +21,12 @@ const start = async () => {
   if (!process.env.NATA_CLIENT_ID) {
     throw new InternalServerError("MONGO_URI not found");
   }
+  if (!process.env.STRIPE_KEY) {
+    throw new InternalServerError("MONGO_URI not found");
+  }
+  if (!process.env.STRIPE_PUB_KEY) {
+    throw new InternalServerError("MONGO_URI not found");
+  }
   try {
     await natsWrapper.connect(
       process.env.NATS_CLUSTER_ID,

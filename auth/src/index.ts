@@ -14,7 +14,7 @@ const start = async () => {
   } catch (err) {
     console.log(err);
   }
-  const PORT = process.env.PORT;
+  const PORT = 3000;
   app
     .listen(PORT, () => {
       console.log(`Auth server is listening to port ${PORT} modified `);

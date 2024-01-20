@@ -23,6 +23,7 @@ const validationCriteria = [
     .isEmpty()
     .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
     .withMessage("Ticket id must be provided"),
+  body("ticketId").isMongoId().withMessage("Invalid ticketId"),
 ];
 createOrderRouter.post(
   "/api/orders",

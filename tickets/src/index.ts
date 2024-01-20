@@ -9,6 +9,8 @@ const start = async () => {
     throw new InternalServerError("JWT Secret not found");
   }
 
+  console.log(process.env.JWT_KEY);
+
   if (!process.env.MONGO_URI) {
     throw new InternalServerError("MONGO_URI not found");
   }
@@ -40,7 +42,7 @@ const start = async () => {
   } catch (err) {
     console.log(err);
   }
-  const PORT = process.env.PORT;
+  const PORT = 3001;
   app
     .listen(PORT, () => {
       console.log(`The tickets service is listening to port ${PORT} modified `);

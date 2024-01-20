@@ -21,7 +21,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     });
 
     await order.save();
-
+    console.log(order);
     msg.ack();
   }
 }
